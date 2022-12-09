@@ -1,0 +1,3 @@
+$(eval $(call addlib,apppvcalls))
+
+APPPVCALLS_SRCS-y += $(APPPVCALLS_BASE)/main.c
