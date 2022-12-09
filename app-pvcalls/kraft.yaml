@@ -1,0 +1,16 @@
+---
+specification: '0.5'
+name: pvcalls
+unikraft:
+  version: -1.10.0
+  kconfig:
+    - CONFIG_LIBNOLIBC=y
+    - CONFIG_LIBUKSCHED=y
+    - CONFIG_LIBUKSCHEDCOOP=y
+    - CONFIG_LIBPOSIX_SOCKET=y
+
+targets:
+  - architecture: x86_64
+    platform: kvm
+  - architecture: arm64
+    platform: xen
