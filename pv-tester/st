@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -eux
+glibc_install=/home/debian/image
+gcc \
+  -L "${glibc_install}/lib" \
+  -I "${glibc_install}/usr/include" \
+  -Wl,--rpath="${glibc_install}/lib" \
+  -Wl,--dynamic-linker="${glibc_install}/lib/ld-linux-aarch64.so.1" \
+  -o pv-sender \
+  -v \
+  pv-sender.c \
+;
+ldd ./pv-sender
