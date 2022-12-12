@@ -1,0 +1,113 @@
+{
+	"ociVersion": "1.0.2-dev",
+	"process": {
+		"user": {
+			"uid": 5001,
+			"gid": 5000
+		},
+		"env": [
+			"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+			"TERM=xterm",
+			"AOS_SERVICE_ID=8dc0c1d0-aac9-4d9d-89b8-fed0ac5fc7b2",
+			"AOS_SUBJECT_ID=d3002721-e6be-4994-b85d-842b2a90e615",
+			"AOS_INSTANCE_INDEX=0",
+			"AOS_INSTANCE_ID=6513419f-463c-4a55-b3da-75590406e9d0",
+			"RUNX_KERNEL=pvcalls_xen-arm64",
+			"RUNX_RAMDISK=",
+			"PVCALLS_BACKEND=0"
+		],
+		"cwd": "/",
+		"args": [
+			"port=8124",
+			"size_mb=1",
+			"alloc_count=2"
+		],
+		"capabilities": {
+			"bounding": [
+				"CAP_AUDIT_WRITE",
+				"CAP_KILL",
+				"CAP_NET_BIND_SERVICE"
+			],
+			"effective": [
+				"CAP_AUDIT_WRITE",
+				"CAP_KILL",
+				"CAP_NET_BIND_SERVICE"
+			],
+			"permitted": [
+				"CAP_AUDIT_WRITE",
+				"CAP_KILL",
+				"CAP_NET_BIND_SERVICE"
+			],
+			"ambient": [
+				"CAP_AUDIT_WRITE",
+				"CAP_KILL",
+				"CAP_NET_BIND_SERVICE"
+			]
+		},
+		"rlimits": [
+			{
+				"type": "RLIMIT_NOFILE",
+				"hard": 1024,
+				"soft": 1024
+			}
+		],
+		"noNewPrivileges": true
+	},
+	"root": {
+		"path": "/var/aos/specs/pv_spec/rootfs"
+	},
+	"hostname": "runc",
+	"linux": {
+		"resources": {
+			"devices": [
+				{
+					"allow": false,
+					"access": "rwm"
+				}
+			],
+			"memory": {
+				"limit": 8388608
+			}
+		},
+		"namespaces": [
+			{
+				"type": "pid"
+			},
+			{
+				"type": "network",
+				"path": "/run/netns/6513418f-463c-4a55-b3da-75590406e9d0"
+			},
+			{
+				"type": "ipc"
+			},
+			{
+				"type": "uts"
+			},
+			{
+				"type": "mount"
+			},
+			{
+				"type": "cgroup"
+			}
+		],
+		"maskedPaths": [
+			"/proc/acpi",
+			"/proc/asound",
+			"/proc/kcore",
+			"/proc/keys",
+			"/proc/latency_stats",
+			"/proc/timer_list",
+			"/proc/timer_stats",
+			"/proc/sched_debug",
+			"/sys/firmware",
+			"/proc/scsi"
+		],
+		"readonlyPaths": [
+			"/proc/bus",
+			"/proc/fs",
+			"/proc/irq",
+			"/proc/sys",
+			"/proc/sysrq-trigger"
+		]
+	}
+}
