@@ -1,0 +1,22 @@
+{
+    "cniVersion": "0.2.0",
+    "name": "xenbr0",
+    "type": "bridge",
+    "bridge": "xenbr0",
+    "isGateway": true,
+    "ipMasq": true,
+    "ipam": {
+        "type": "host-local",
+        "subnet": "192.168.0.1/24",
+        "rangeStart": "192.168.0.20",
+        "rangeEnd": "192.168.0.30",
+        "gateway": "192.168.0.1",
+        "routes": [
+            { "dst": "192.168.0.0/24" }
+        ],
+     "dataDir": "/run/ipam-state"
+    },
+    "dns": {
+    "nameservers": [ "8.8.8.8" ]
+    }
+}
