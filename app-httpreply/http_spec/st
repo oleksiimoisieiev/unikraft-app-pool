@@ -1,0 +1,6 @@
+#!/bin/bash
+ROOT=/home/debian/http_spec
+/usr/sbin/runX kill http_reply
+/usr/sbin/runX --root $ROOT --log ${ROOT}/log.json --log-format json create --bundle ${ROOT} --pid-file ${ROOT}/init.pid http_reply
+
+#runX --root /run/containerd/runc/default --log /run/containerd/io.containerd.runtime.v2.task/default/1/log.json --log-format json create --bundle /run/containerd/io.containerd.runtime.v2.task/default/1 --pid-file /run/containerd/io.containerd.runtime.v2.task/default/1/init.pid 1

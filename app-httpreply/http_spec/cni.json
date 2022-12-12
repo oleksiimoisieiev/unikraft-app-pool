@@ -1,0 +1,22 @@
+{
+    "cniVersion": "0.2.0",
+    "name": "mynet",
+    "type": "bridge",
+    "bridge": "virbr0",
+    "isGateway": true,
+    "ipMasq": true,
+    "ipam": {
+        "type": "host-local",
+        "subnet": "172.44.0.0/24",
+        "rangeStart": "172.44.0.2",
+        "rangeEnd": "172.44.0.255",
+        "gateway": "172.44.0.1",
+        "routes": [
+            { "dst": "192.168.0.0/24" }
+        ],
+     "dataDir": "/run/ipam-state"
+    },
+    "dns": {
+    "nameservers": [ "8.8.8.8" ]
+    }
+}
