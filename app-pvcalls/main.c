@@ -38,6 +38,7 @@
 #include <errno.h>
 #include <uk/alloc.h>
 #include <uk/syscall.h>
+#include <poll.h>
 #define LISTEN_PORT 8123
 
 #define BUFLEN 2048
@@ -134,6 +135,9 @@ int main(int argc __attribute__((unused)),
 {
 	int i, rc = 0;
 	int srv, client;
+	int timeout;
+	nfds_t nfds = 1, current_size;
+	struct pollfd fds[200];
 	struct sockaddr_in srv_addr;
 	int size_mb = 1, alloc_count = 3, port = LISTEN_PORT;
 #if !defined(UK_LIBC_SYSCALLS)
@@ -179,26 +183,52 @@ int main(int argc __attribute__((unused)),
 		goto out;
 	}
 
-	printf("Listening on port %d...\n", port);
-	client = uk_syscall_r_accept(srv, NULL, 0);
-	if (client < 0) {
-		fprintf(stderr,
-			"Failed to accept incoming connection: %d\n",
-			errno);
-		goto out;
+	memset(fds, 0, sizeof(fds));
+	fds[0].fd = srv;
+	fds[0].events = POLLIN;
+	timeout =  10 * 1000;
+	printf("Listening on port %d... start polling\n", port);
+	while (1) {
+		rc = uk_syscall_r_poll(fds, nfds, timeout);
+		if (rc < 0) {
+			fprintf(stderr,
+					"Failed to poll incoming connection: %d\n",
+					errno);
+			goto out;
+		}
+
+		current_size = nfds;
+		printf("tick\n");
+		for (i = 0; i < current_size; i++) {
+			if (fds[i].revents == 0)
+				continue;
+
+			if (fds[i].revents != POLLIN)
+				break;
+
+			if (fds[i].fd == srv) {
+               client = uk_syscall_r_accept(srv, NULL, NULL);
+			   if (client < 0) {
+				   printf("Err: %d\n", __LINE__);
+				   break;
+			   }
+			   fds[nfds].fd = client;
+			   fds[nfds].events = POLLIN;
+			   nfds++;
+            } else {
+              /* Receive some bytes (ignore errors) */
+              uk_syscall_r_read(client, recvbuf, BUFLEN);
+              printf("Received pvbuf = %s\n", recvbuf);
+              uk_syscall_r_write(client, "123", sizeof("123"));
+			  uk_syscall_r_close(client);
+
+              fds[i].fd = -1;
+              nfds--;
+            }
+		}
 	}
+	uk_syscall_r_close(srv);
 
-	/* Receive some bytes (ignore errors) */
-	uk_syscall_r_read(client, recvbuf, BUFLEN);
-	printf("Received pvbuf = %s", recvbuf);
-	uk_syscall_r_close(client);
-
-	if (strncmp(recvbuf, "cm", strlen("cm")) == 0)
-		load_cpu_mem(size_mb * alloc_count);
-	else if (strncmp(recvbuf, "c", strlen("c")) == 0)
-		load_cpu();
-	else if (strncmp(recvbuf, "m", strlen("m")) == 0)
-		load_mem(size_mb, alloc_count);
 out:
 	return rc;
 }
