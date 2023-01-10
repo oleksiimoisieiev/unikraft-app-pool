@@ -40,6 +40,7 @@
 #include <errno.h>
 #include <uk/alloc.h>
 #include <uk/blkdev.h>
+#include <dirent.h>
 
 #define LISTEN_PORT 8123
 static const char reply_format[] = "HTTP/1.1 200 OK\r\n" \
@@ -123,6 +124,20 @@ void init_block_device()
 	}
 }
 
+void scan_9p()
+{
+	void *data;
+	int fd;
+    int ret = mount("share_dir", "/", "9pfs", 0, data);
+	printf("mount ret = %d\n", ret);
+	fd = creat("/2", O_CREAT);
+    printf("creat fd = %d\n", fd);
+
+	close(fd);
+    ret = umount2("/", 0);
+	printf("umount2 ret = %d\n", ret);
+}
+
 int main(int argc __attribute__((unused)),
 	 char *argv[] __attribute__((unused)))
 {
@@ -130,6 +145,9 @@ int main(int argc __attribute__((unused)),
 	int srv, client;
 	ssize_t n;
 	struct sockaddr_in srv_addr;
+
+	scan_9p();
+	/* return 0; */
 
 	init_block_device();
 
@@ -168,7 +186,7 @@ int main(int argc __attribute__((unused)),
 			goto out;
 		}
 
-		/* Receive some bytes (ignore errors) */
+ 		/* Receive some bytes (ignore errors) */
 		read(client, recvbuf, BUFLEN);
 
 		/* Send reply */
