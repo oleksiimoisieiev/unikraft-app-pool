@@ -10,6 +10,7 @@ int main(int argc, char const* argv[])
 	int sock = 0, valread, client_fd;
 	struct sockaddr_in serv_addr;
 	char buffer[1024] = { 0 };
+	char sss;
 	if (argc < 4) {
 		printf("Usage ./pv-server <IP> <PORT> <MSG>\n");
 		return 0;
@@ -39,13 +40,21 @@ int main(int argc, char const* argv[])
 		printf("\nConnection Failed \n");
 		return -1;
 	}
+	send(sock, argv[3], strlen(argv[3]), 0);
+	printf("Message sent %s\n", argv[2]);
+	valread = 0;
+	valread = recv(sock, buffer, 5, 0);
+	printf("Response: %s valread = %d\n", buffer, valread);
+	sleep(1);
 	
 	send(sock, argv[3], strlen(argv[3]), 0);
-	printf("Message sent %s\n", argv[3]);
-//	valread = read(sock, buffer, 1024);
-//	printf("Response: %s\n", buffer);
+	printf("Message sent %s\n", argv[2]);
+	valread = 0;
+	valread = recv(sock, buffer, 5, 0);
+	printf("Response: %s valread = %d\n", buffer, valread);
+	sleep(1);
 
 	// closing the connected socket
-	close(client_fd);
+	close(sock);
 	return 0;
 }
