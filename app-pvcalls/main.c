@@ -189,27 +189,16 @@ int main(int argc __attribute__((unused)),
 					errno);
 			goto out;
 		}
-		sprintf(sndbuf, "abr %d", i);
+
 		while (1) {
-		/* Receive some bytes (ignore errors) */
-		rc = uk_syscall_r_read(client, recvbuf, BUFLEN);
-		printf("Received pvbuf = %s rc = %d", recvbuf, rc);
-		if (rc <=0)
-                  break;
-                /* sleep(1); */
-        }
+			rc =uk_syscall_r_read(client, recvbuf, BUFLEN);
+			if (rc <= 0)
+				break;
+			printf("Received pvbuf = %s", recvbuf);
 
-		uk_syscall_r_write(client, sndbuf, sizeof(sndbuf));
-
-		sleep(1);
-                uk_syscall_r_read(client, recvbuf, BUFLEN);
-                printf("Received pvbuf = %s", recvbuf);
-
-                uk_syscall_r_write(client, "bra 1", sizeof("bra 1"));
-                sleep(3);
-
+			uk_syscall_r_write(client, "OK", sizeof("OK"));
+		}
 		uk_syscall_r_close(client);
-		i++;
 	}
 	/* if (strncmp(recvbuf, "cm", strlen("cm")) == 0) */
 		/* load_cpu_mem(size_mb * alloc_count); */

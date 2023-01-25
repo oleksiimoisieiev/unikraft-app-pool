@@ -35,12 +35,12 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/socket.h>
-#include <arpa/inet.h>
 #include <unistd.h>
 #include <errno.h>
 #include <uk/alloc.h>
 #include <uk/blkdev.h>
 #include <dirent.h>
+#include <netinet/in.h>
 
 #define LISTEN_PORT 8123
 static const char reply_format[] = "HTTP/1.1 200 OK\r\n" \
