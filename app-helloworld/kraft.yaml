@@ -1,8 +1,9 @@
 ---
 specification: '0.5'
 name: helloworld
+
 unikraft:
-  version: 0.10.0
+  version: 0.11.0
 targets:
   - architecture: x86_64
     platform: linuxu
@@ -10,7 +11,7 @@ targets:
     platform: kvm
   - architecture: x86_64
     platform: xen
- - architecture: arm64
+  - architecture: arm64
     platform: xen
   - architecture: arm64
     platform: linuxu
