@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
 		printf(" %s \n",          monkey3[i++]);
 		printf(" %s ",            monkey3[i++]);
 		fflush(stdout);
-		millisleep(250);
+		millisleep(2000);
 	}
 #endif /* CONFIG_APPHELLOWORLD_SPINNER */
 
