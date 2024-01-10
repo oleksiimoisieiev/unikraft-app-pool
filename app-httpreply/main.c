@@ -117,6 +117,7 @@ void init_block_device()
 		   uk_blkdev_state_get(blkdev)
 		   );
 
+	printf("BLKDEV_STATS: %s", blkdev_data);
         rc = uk_blkdev_stop(blkdev);
 	if (rc) {
 		printf("%d : rc = %d", __LINE__, rc);
