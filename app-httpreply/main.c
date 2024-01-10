@@ -131,12 +131,12 @@ void scan_9p()
 	int fd;
 	int ret = mount("share_dir", "/", "9pfs", 0, data);
 	printf("mount ret = %d\n", ret);
-	fd = creat("/2", O_CREAT);
+	fd = creat("/2", O_CREAT | O_RDWR);
 	printf("creat fd = %d\n", fd);
 
 	close(fd);
-	ret = umount2("/", 0);
-	printf("umount2 ret = %d\n", ret);
+        ret = umount2("/", 0);
+        printf("umount2 ret = %d\n", ret);
 }
 
 int main(int argc __attribute__((unused)),
