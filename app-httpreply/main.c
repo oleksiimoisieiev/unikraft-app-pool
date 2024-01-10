@@ -129,13 +129,13 @@ void scan_9p()
 {
 	void *data;
 	int fd;
-    int ret = mount("share_dir", "/", "9pfs", 0, data);
+	int ret = mount("share_dir", "/", "9pfs", 0, data);
 	printf("mount ret = %d\n", ret);
 	fd = creat("/2", O_CREAT);
-    printf("creat fd = %d\n", fd);
+	printf("creat fd = %d\n", fd);
 
 	close(fd);
-    ret = umount2("/", 0);
+	ret = umount2("/", 0);
 	printf("umount2 ret = %d\n", ret);
 }
 
