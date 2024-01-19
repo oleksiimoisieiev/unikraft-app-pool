@@ -135,7 +135,6 @@ int main(int argc __attribute__((unused)),
 	int i, rc = 0;
 	int srv, client;
 	struct sockaddr_in srv_addr;
-	char sndbuf[5];
 	int size_mb = 1, alloc_count = 3, port = LISTEN_PORT;
 #if !defined(UK_LIBC_SYSCALLS)
 	fprintf(stderr, "UK_LIBC_SYSCALLS should be enabled, exitting\n");
@@ -190,14 +189,12 @@ int main(int argc __attribute__((unused)),
 			goto out;
 		}
 
-		while (1) {
-			rc =uk_syscall_r_read(client, recvbuf, BUFLEN);
-			if (rc <= 0)
-				break;
-			printf("Received pvbuf = %s", recvbuf);
+		rc =uk_syscall_r_read(client, recvbuf, BUFLEN);
+		if (rc <= 0)
+			break;
+		printf("Received pvbuf = %s", recvbuf);
 
-			uk_syscall_r_write(client, "OK", sizeof("OK"));
-		}
+		uk_syscall_r_write(client, "OK", strlen("OK") + 1);
 		uk_syscall_r_close(client);
 	}
 	/* if (strncmp(recvbuf, "cm", strlen("cm")) == 0) */
